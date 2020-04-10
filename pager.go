@@ -5,6 +5,8 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"os/signal"
+	"syscall"
 )
 
 // find pager path using PAGER env variable or attempt the array of arguments
@@ -50,6 +52,9 @@ func getPagerPath(try ...string) string {
 func Pager(try ...string) (io.Writer, func()) {
 	p := getPagerPath(try...)
 	if p != "" {
+
+		signal.Ignore(syscall.SIGPIPE)
+
 		cmd := exec.Command(p)
 		r, w := io.Pipe()
 		cmd.Stdin = r
