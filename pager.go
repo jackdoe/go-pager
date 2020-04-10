@@ -62,6 +62,7 @@ func Pager(try ...string) (io.Writer, func()) {
 			if err != nil {
 				panic(err)
 			}
+			os.Exit(0)
 		}()
 
 		return w, func() {
